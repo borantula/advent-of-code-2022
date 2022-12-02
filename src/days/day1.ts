@@ -1,6 +1,6 @@
 import { sum, take } from 'lodash';
 import utils = require('../utils');
-import { data } from './data';
+import { data } from './day1-data';
 
 export function q1() {
   const parsed = utils
