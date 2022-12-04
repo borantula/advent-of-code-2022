@@ -8,6 +8,7 @@ console.log(`DAY ${argv.day}`);
 import day1 = require('./days/day1');
 import day2 = require('./days/day2');
 import day3 = require('./days/day3');
+import day4 = require('./days/day4');
 
 try {
   switch (argv.day) {
@@ -22,6 +23,10 @@ try {
     case 3:
       day3.q1();
       day3.q2();
+      break;
+    case 4:
+      day4.q1();
+      day4.q2();
       break;
 
     default:
