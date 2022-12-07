@@ -25,10 +25,6 @@ const parseCommands = flow(
 function getCratePosition(i: number) {
   return (i - 1) * 4 + 1;
 }
-console.log(getCratePosition(1), 1);
-console.log(getCratePosition(2), 5);
-console.log(getCratePosition(3), 9);
-console.log(getCratePosition(4), 13);
 
 export function q1() {
   const parsed = utils.parseByEmptyLinesToArray(data);
