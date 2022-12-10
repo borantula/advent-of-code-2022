@@ -1,9 +1,7 @@
 import * as ArrayFP from 'fp-ts/Array';
-
-import * as S from 'fp-ts/string';
 import { pipe } from 'fp-ts/function';
 import utils = require('../utils');
-import { chunk, sumBy, take } from 'lodash';
+import { chunk, sumBy } from 'lodash';
 import { sampleData, data } from './day10-data';
 
 type Cycle = {
