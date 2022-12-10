@@ -1,7 +1,7 @@
 import * as ArrayFP from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import utils = require('../utils');
-import { chunk, sumBy } from 'lodash';
+import { sumBy } from 'lodash';
 import { sampleData, data } from './day10-data';
 
 type Cycle = {
@@ -94,7 +94,7 @@ export function q2() {
   const parsed = pipe(
     utils.parseLinesToArray(data),
     getCycles,
-    (a) => chunk(a, 40),
+    ArrayFP.chunksOf(40),
     getLines,
   );
 
