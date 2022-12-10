@@ -80,7 +80,7 @@ export function q1() {
   const significantCycles = [20, 60, 100, 140, 180, 220];
 
   const parsed = pipe(
-    utils.parseLinesToArray(sampleData),
+    utils.parseLinesToArray(data),
     getCycles,
     ArrayFP.filter((a) => significantCycles.includes(a.cycle)),
     // utils.logger,
