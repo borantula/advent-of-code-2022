@@ -130,19 +130,19 @@ const runRounds2 = (round: Round, until = 1): Round => {
 };
 
 export function q1() {
-  // const parsed = pipe(
-  //   utils.parseLinesToArray(data),
-  //   ArrayFP.chunksOf(6),
-  //   (a) => a as Rule[],
-  //   ArrayFP.map(initMonkey),
-  //   (monkeys) => runRounds({ order: 0, monkeys }, 20),
-  //   utils.logger,
-  //   (r) => r.monkeys.map((a) => a.inspectCount),
-  //   ArrayFP.sort(N.Ord),
-  //   (a) => a.reverse(),
-  //   (r) => r[0] * r[1],
-  // );
-  // console.log('Q1', parsed);
+  const parsed = pipe(
+    utils.parseLinesToArray(data),
+    ArrayFP.chunksOf(6),
+    (a) => a as Rule[],
+    ArrayFP.map(initMonkey),
+    (monkeys) => runRounds({ order: 0, monkeys }, 20),
+    utils.logger,
+    (r) => r.monkeys.map((a) => a.inspectCount),
+    ArrayFP.sort(N.Ord),
+    (a) => a.reverse(),
+    (r) => r[0] * r[1],
+  );
+  console.log('Q1', parsed);
 }
 
 export function q2() {
