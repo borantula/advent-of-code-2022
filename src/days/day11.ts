@@ -142,6 +142,7 @@ export function q1() {
     (a) => a.reverse(),
     (r) => r[0] * r[1],
   );
+
   console.log('Q1', parsed);
 }
 
