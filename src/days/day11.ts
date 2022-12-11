@@ -2,7 +2,6 @@ import * as ArrayFP from 'fp-ts/Array';
 import * as N from 'fp-ts/number';
 import { pipe } from 'fp-ts/function';
 import utils = require('../utils');
-import { StringIterator, sumBy } from 'lodash';
 import { sampleData, data } from './day11-data';
 
 type ThrowingRules = {
