@@ -67,7 +67,7 @@ const runRounds = (round: Round, until = 1): Round => {
 
   for (let i = 0; i < monkeys.length; i++) {
     const monkey = monkeys[i];
-    console.log(monkey);
+
     monkey.items
       .map((a) => {
         // eslint-disable-next-line prefer-const
@@ -94,40 +94,45 @@ const runRounds = (round: Round, until = 1): Round => {
   return runRounds(newRound, until);
 };
 
-const runRounds2 = (round: Round, until = 1): Round => {
-  if (until === round.order) {
-    return round;
-  }
+const runRounds2 = (round: Round, until = 1, lcm = 1): Round => {
+  const newRound: Round = round;
   const { monkeys } = round;
 
-  for (let i = 0; i < monkeys.length; i++) {
-    const monkey = monkeys[i];
-    console.log(monkey);
-    monkey.items
-      .map((a) => {
-        // eslint-disable-next-line prefer-const
-        let valuenew = a;
-        eval(
-          `value${monkey.operation.replace(new RegExp('old', 'g'), String(a))}`,
-        );
+  for (let r = 1; r <= until; r++) {
+    for (let i = 0; i < monkeys.length; i++) {
+      const monkey = monkeys[i];
+      monkey.items
+        .map((a) => {
+          // eslint-disable-next-line prefer-const
+          let valuenew = a;
+          eval(
+            `value${monkey.operation.replace(
+              new RegExp('old', 'g'),
+              String(a),
+            )}`,
+          );
 
-        return valuenew;
-      })
-      .forEach((a) => {
-        if (a % monkey.throwingRules.test === 0) {
-          monkeys[monkey.throwingRules.onTrue].items.push(a);
-        } else {
-          monkeys[monkey.throwingRules.onFalse].items.push(a);
-        }
-        monkeys[i].items.shift();
-        monkeys[i].inspectCount++;
-      });
+          return valuenew;
+        })
+        .forEach((a) => {
+          if (a % monkey.throwingRules.test === 0) {
+            monkeys[monkey.throwingRules.onTrue].items.push(a % lcm);
+          } else {
+            monkeys[monkey.throwingRules.onFalse].items.push(a % lcm);
+          }
+          monkeys[i].items.shift();
+          monkeys[i].inspectCount++;
+        });
+    }
+
+    newRound.order = r;
+    newRound.monkeys = round.monkeys;
   }
-
-  const newRound: Round = { order: round.order + 1, monkeys };
-
-  return runRounds(newRound, until);
+  return newRound;
 };
+
+const lcm = (monkeys: Monkey[]) =>
+  monkeys.reduce((acc, cur) => acc * cur.throwingRules.test, 1);
 
 export function q1() {
   const parsed = pipe(
@@ -142,23 +147,26 @@ export function q1() {
     (a) => a.reverse(),
     (r) => r[0] * r[1],
   );
-
   console.log('Q1', parsed);
 }
 
 export function q2() {
-  const parsed = pipe(
-    utils.parseLinesToArray(sampleData),
+  const RUNCOUNT = 10000;
+  const monkeys = pipe(
+    utils.parseLinesToArray(data),
     ArrayFP.chunksOf(6),
     (a) => a as Rule[],
     ArrayFP.map(initMonkey),
-    (monkeys) => runRounds2({ order: 0, monkeys }, 20),
-    utils.logger,
+  );
+  const parsed = pipe(
+    monkeys,
+    (monkeys) => runRounds2({ order: 0, monkeys }, RUNCOUNT, lcm(monkeys)),
     (r) => r.monkeys.map((a) => a.inspectCount),
-    // ArrayFP.sort(N.Ord),
-    // (a) => a.reverse(),
-    // (r) => r[0] * r[1],
+    utils.logger,
+    ArrayFP.sort(N.Ord),
+    (a) => a.reverse(),
+    (r) => r[0] * r[1],
   );
 
-  console.log('Q1', parsed);
+  console.log('Q2', parsed);
 }
