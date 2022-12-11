@@ -22,8 +22,6 @@ type Round = {
   monkeys: Monkey[];
 };
 
-type Rule = [string, string, string, string, string, string];
-
 const initMonkey = (rules: string[]): Monkey => {
   const items = rules[1]
     .replace('Starting items: ', '')
