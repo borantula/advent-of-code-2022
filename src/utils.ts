@@ -21,7 +21,7 @@ export function backToMatrixString(m: string[][]) {
   return m.map((row) => row.join('')).join('\n');
 }
 
-export function logger(a: any) {
+export function logger<T>(a: T) {
   console.log(a);
   return a;
 }
