@@ -11,8 +11,6 @@ type ThrowingRules = {
   onFalse: number;
 };
 type Monkey = {
-  id: number;
-  name: string;
   items: number[];
   inspectCount: number;
   operation: string;
@@ -27,15 +25,12 @@ type Round = {
 type Rule = [string, string, string, string, string, string];
 
 const initMonkey = (rules: string[]): Monkey => {
-  const name = rules[0].replace(':', '');
   const items = rules[1]
     .replace('Starting items: ', '')
     .split(', ')
     .map(Number);
 
   return {
-    id: Number(name.replace('Monkey ', '')),
-    name,
     items,
     inspectCount: 0,
     operation: rules[2].replace('Operation: ', ''),
