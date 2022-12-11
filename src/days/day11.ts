@@ -129,16 +129,22 @@ const runRounds2 = (round: Round, until = 1, lcm = 1): Round => {
 const lcm = (monkeys: Monkey[]) =>
   monkeys.reduce((acc, cur) => acc * cur.throwingRules.test, 1);
 
-export function q1() {
-  const parsed = pipe(
+const parseMonkeys = (data: string) =>
+  pipe(
     utils.parseLinesToArray(data),
     ArrayFP.chunksOf(6),
-    (a) => a as Rule[],
     ArrayFP.map(initMonkey),
-    (monkeys) => runRounds({ order: 0, monkeys }, 20),
+  );
+
+export function q1() {
+  const RUNCOUNT = 20;
+  const parsed = pipe(
+    data,
+    parseMonkeys,
+    (monkeys) => runRounds({ order: 0, monkeys }, RUNCOUNT),
     (r) => r.monkeys.map((a) => a.inspectCount),
     ArrayFP.sort(N.Ord),
-    (a) => a.reverse(),
+    ArrayFP.reverse,
     (r) => r[0] * r[1],
   );
   console.log('Q1', parsed);
@@ -146,18 +152,14 @@ export function q1() {
 
 export function q2() {
   const RUNCOUNT = 10000;
-  const monkeys = pipe(
-    utils.parseLinesToArray(data),
-    ArrayFP.chunksOf(6),
-    (a) => a as Rule[],
-    ArrayFP.map(initMonkey),
-  );
+
   const parsed = pipe(
-    monkeys,
+    data,
+    parseMonkeys,
     (monkeys) => runRounds2({ order: 0, monkeys }, RUNCOUNT, lcm(monkeys)),
     (r) => r.monkeys.map((a) => a.inspectCount),
     ArrayFP.sort(N.Ord),
-    (a) => a.reverse(),
+    ArrayFP.reverse,
     (r) => r[0] * r[1],
   );
 
