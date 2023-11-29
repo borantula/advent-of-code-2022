@@ -1,31 +1,9 @@
-# Bora Yalcin - Advent of Code 2022
+# Bora Yalcin 
+## Advent of Code 2022 
+## Advent of Code 2023
 
 ### Scripts
 
-#### `npm run start:dev`
+#### `yarn start:dev --day=1 --year=2022`
 
-Starts the application in development using `nodemon` and `ts-node` to do hot reloading.
-
-#### `npm run start`
-
-Starts the app in production by first building the project with `npm run build`, and then executing the compiled JavaScript at `build/index.js`.
-
-#### `npm run build`
-
-Builds the app at `build`, cleaning the folder first.
-
-#### `npm run test`
-
-Runs the `jest` tests once.
-
-#### `npm run test:dev`
-
-Run the `jest` tests in watch mode, waiting for file changes.
-
-#### `npm run prettier-format`
-
-Format your code.
-
-#### `npm run prettier-watch`
-
-Format your code in watch mode, waiting for file changes.
+Starts the application in development using `nodemon` and `ts-node` to do hot reloading. If year is not provided it'll use the current year
