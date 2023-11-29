@@ -3,23 +3,44 @@ import minimist = require('minimist');
 
 const argv = minimist(process.argv.slice(2));
 
-console.log(`DAY ${argv.day}`);
+const year = argv.year || new Date().getFullYear();
+const day = argv.day;
+console.log(`DAY ${day} and YEAR ${year}`);
 
-import day1 = require('./days/day1');
-import day2 = require('./days/day2');
-import day3 = require('./days/day3');
-import day4 = require('./days/day4');
-import day5 = require('./days/day5');
-import day6 = require('./days/day6');
-import day7 = require('./days/day7');
-import day8 = require('./days/day8');
-import day9 = require('./days/day9');
-import day10 = require('./days/day10');
-import day11 = require('./days/day11');
-import day12 = require('./days/day12');
-import day13 = require('./days/day13');
-import day14 = require('./days/day14');
+if (!day || !year) {
+  throw 'Day or Year is missing!';
+}
 
+async function runTheDay(day: number, year: number) {
+  try {
+    const module = await import(`./${year}/days/day${day}`);
+    console.log('Module loaded successfully');
+    return module;
+  } catch (error) {
+    console.error('Error loading the module:', error);
+  }
+}
+
+runTheDay(day, year).then((currentDay) => {
+  console.log(currentDay.q1());
+  console.log(currentDay.q2());
+});
+
+// import day1 = require('./days/day1');
+// import day2 = require('./days/day2');
+// import day3 = require('./days/day3');
+// import day4 = require('./days/day4');
+// import day5 = require('./days/day5');
+// import day6 = require('./days/day6');
+// import day7 = require('./days/day7');
+// import day8 = require('./days/day8');
+// import day9 = require('./days/day9');
+// import day10 = require('./days/day10');
+// import day11 = require('./days/day11');
+// import day12 = require('./days/day12');
+// import day13 = require('./days/day13');
+// import day14 = require('./days/day14');
+/*
 try {
   switch (argv.day) {
     case 1:
@@ -88,3 +109,4 @@ try {
 } catch (err) {
   console.error(err);
 }
+*/

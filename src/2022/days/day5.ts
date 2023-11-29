@@ -1,5 +1,5 @@
 import * as ArrayFP from 'fp-ts/Array';
-import * as N from 'fp-ts/Number';
+import * as N from 'fp-ts/number';
 import * as NEA from 'fp-ts/NonEmptyArray';
 import { flow, pipe } from 'fp-ts/function';
 import utils = require('../utils');

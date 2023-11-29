@@ -1,5 +1,5 @@
 import { sum, take } from 'lodash';
-import utils = require('../utils');
+import utils = require('../../utils');
 import { data } from './day1-data';
 
 export function q1() {
