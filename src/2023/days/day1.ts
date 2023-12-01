@@ -27,24 +27,21 @@ export function q2() {
       nine: '9',
     };
 
-    const matches = [];
-    str.matchAll(/one|two|three|four|five|six|seven|eight|nine/g);
-    str = str.replaceAll(
-      /one|two|three|four|five|six|seven|eight|nine/g,
-      (m: string) => {
-        // console.log(m);
-        // because eightwone should be 821 so cheating a bit
-        return wordsToDigits[m] + m[m.length - 1];
-      },
+    const matches: string[] = [];
+
+    const regex = /(?=([1-9]|one|two|three|four|five|six|seven|eight|nine))/g;
+
+    [...str.matchAll(regex)].forEach((m) =>
+      matches.push(wordsToDigits[m[1]] || m[1]),
     );
 
-    return str;
+    return matches.join('');
   };
 
   const parsed = utils
     .parseLinesToArray(data)
     .map(convertNumbers)
-    .map(convertNumbers)
+    // .map(convertNumbers)
     .map((a) => a.match(/\d+/g) || [])
     .map((a) => a.join('').split('').map(Number))
     .map((a) => a[0] * 10 + a[a?.length - 1]);
