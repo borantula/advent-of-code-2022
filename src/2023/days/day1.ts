@@ -41,7 +41,6 @@ export function q2() {
   const parsed = utils
     .parseLinesToArray(data)
     .map(convertNumbers)
-    // .map(convertNumbers)
     .map((a) => a.match(/\d+/g) || [])
     .map((a) => a.join('').split('').map(Number))
     .map((a) => a[0] * 10 + a[a?.length - 1]);
