@@ -14,12 +14,10 @@ const bounds: Record<Color, number> = {
 };
 
 export function q1() {
-  return;
   const playGame = (gameSet: string[]) => {
     for (let i = 0; i < gameSet.length; i++) {
       const [n, c] = gameSet[i].trim().split(' ') as [string, Color];
-      console.log('set', gameSet[i]);
-      console.log('color', c);
+
       if (bounds[c] < Number(n)) {
         return false;
       }
@@ -62,8 +60,6 @@ export function q2() {
   const playGame = (gameSet: string[], currentMax: Record<Color, number>) => {
     for (let i = 0; i < gameSet.length; i++) {
       const [n, c] = gameSet[i].trim().split(' ') as [string, Color];
-      console.log('set', gameSet[i]);
-      console.log('color', c);
       currentMax[c] = Math.max(Number(n), currentMax[c]);
     }
     return currentMax;
@@ -72,26 +68,20 @@ export function q2() {
     data,
     utils.parseLinesToArray,
 
-    ArrayFP.map((c) => {
-      return c.split(':') as [string, string];
-    }),
+    ArrayFP.map((c) => c.split(':') as [string, string]),
     ArrayFP.map((c) => {
       const games = c[1].split(';').map((a) => a.trim().split(','));
-      return [c[0], ...games];
+      return games;
     }),
-    utils.logger,
-    ArrayFP.map((gameSet) => {
-      const [gameIdentifier, ...games] = gameSet;
-      const gameId = Number((gameIdentifier as string).split(' ')[1]);
+
+    ArrayFP.map((games) => {
       let currentMax: Record<Color, number> = {
         red: 0,
         green: 0,
         blue: 0,
       };
       for (let i = 0; i < games.length; i++) {
-        const colorSets = games[i] as string[];
-        utils.logger(colorSets);
-        currentMax = playGame(colorSets, currentMax);
+        currentMax = playGame(games[i], currentMax);
       }
       return currentMax;
     }),
