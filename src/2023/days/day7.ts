@@ -27,6 +27,21 @@ const cardOrder = [
   '3',
   '2',
 ];
+const cardOrder2 = [
+  'A',
+  'K',
+  'Q',
+  'T',
+  '9',
+  '8',
+  '7',
+  '6',
+  '5',
+  '4',
+  '3',
+  '2',
+  'J',
+];
 /**
 Five of a kind, where all five cards have the same label: AAAAA
 Four of a kind, where four cards have the same label and one card has a different label: AA8AA
@@ -50,8 +65,33 @@ function getHandRank(cards: string[]) {
   const group = Object.values(groupBy(cards)).sort((a, b) =>
     a.length < b.length ? 1 : -1,
   );
+
   const lengths = group.map((x) => x.length).join('') as keyof typeof handRanks;
-  // console.log(cards, group, lengths);
+
+  return handRanks[lengths];
+}
+
+function getHandRankWithJoker(cards: string[]) {
+  const grouped = groupBy(cards);
+  const { J: jokers, ...groups } = grouped;
+  const group = Object.values(groups).sort((a, b) =>
+    a.length < b.length ? 1 : -1,
+  );
+  // all J
+  if (!group.length) {
+    return 7;
+  }
+
+  const hasJoker = !!jokers;
+
+  if (hasJoker) {
+    jokers
+      .map(() => group[0][0])
+      .forEach((a) => {
+        group[0].push(a);
+      });
+  }
+  const lengths = group.map((x) => x.length).join('') as keyof typeof handRanks;
 
   return handRanks[lengths];
 }
@@ -94,8 +134,48 @@ export function q1() {
   const result = parsed.map((hand, i) => {
     return (i + 1) * hand.bid;
   });
-  console.log('Q1', parsed, result, sum(result));
+  console.log('Q1', sum(result));
   console.timeEnd('Execution Time');
 }
 
-export function q2() {}
+export function q2() {
+  console.time('Execution Time');
+  const parsed = pipe(
+    data,
+    utils.parseLinesToArray,
+    ArrayFP.map((x) => x.split(' ')),
+    ArrayFP.map((x) => {
+      const cards = x[0].split('');
+      return {
+        cards,
+        hand: x[0],
+        handRank: getHandRankWithJoker(cards),
+        bid: Number(x[1]),
+      } as Hand;
+    }),
+  );
+
+  parsed.sort((a, b) => {
+    if (a.handRank === b.handRank) {
+      // check for card order for equal ranks
+      for (let i = 0; i < 5; i++) {
+        const aEl = cardOrder2.indexOf(a.cards[i]);
+        const bEl = cardOrder2.indexOf(b.cards[i]);
+
+        if (aEl === bEl) {
+          continue;
+        }
+
+        return aEl < bEl ? 1 : -1;
+      }
+      return 0;
+    }
+    return a.handRank > b.handRank ? 1 : -1;
+  });
+
+  const result = parsed.map((hand, i) => {
+    return (i + 1) * hand.bid;
+  });
+  console.log('Q2', sum(result));
+  console.timeEnd('Execution Time');
+}

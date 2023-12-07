@@ -26,12 +26,63 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.q2 = exports.q1 = void 0;
 const day5_data_1 = require("./day5-data");
 const utils = __importStar(require("../../utils"));
+const ArrayFP = __importStar(require("fp-ts/Array"));
 const function_1 = require("fp-ts/function");
+const lodash_1 = require("lodash");
+function findInGroup(n, groups) {
+    for (let i = 0; i < groups.length; i++) {
+        const [d, s, r] = groups[i];
+        // out of bounds, don't bother
+        if (n < s || s + r < n) {
+            continue;
+        }
+        const ind = n - s;
+        if (ind >= 0) {
+            return d + ind;
+        }
+    }
+    return n;
+}
 function q1() {
-    const groups = (0, function_1.pipe)(day5_data_1.sampleData, utils.parseByEmptyLinesToArray);
-    const parsed = (0, function_1.pipe)(groups);
-    console.log('Q1', parsed);
+    return;
+    console.time('Execution Time');
+    const [seed, ...groups] = (0, function_1.pipe)(day5_data_1.data, utils.parseByEmptyLinesToArray);
+    const seeds = seed.split(':')[1].trim().split(' ').map(Number);
+    const groupMaps = groups.map((g) => (0, function_1.pipe)(g.split(':')[1], utils.parseLinesToArray, ArrayFP.map((a) => a.split(' ').map(Number))));
+    const result = groupMaps.reduce((t, c) => {
+        return t.map((a) => findInGroup(a, c));
+    }, seeds);
+    console.log('Q1', seeds, Math.min(...result));
+    console.timeEnd('Execution Time');
 }
 exports.q1 = q1;
-function q2() { }
+function q2() {
+    console.time('Execution Time');
+    const [seed, ...groups] = (0, function_1.pipe)(day5_data_1.data, utils.parseByEmptyLinesToArray);
+    const seeds = seed.split(':')[1].trim().split(' ').map(Number);
+    const groupMaps = groups.map((g) => (0, function_1.pipe)(g.split(':')[1], utils.parseLinesToArray, ArrayFP.map((a) => a.split(' ').map(Number))));
+    let seedChunks = (0, lodash_1.chunk)(seeds, 2);
+    seedChunks = seedChunks.map(([s, r]) => [s, s + r - 1]);
+    seedChunks.sort((a, b) => (a[0] > b[0] ? -1 : 1));
+    console.log(seedChunks);
+    const checkGroupMap = (seed) => groupMaps.reduce((t, c) => {
+        return findInGroup(t, c);
+    }, seed);
+    const result = seedChunks.reduce((t, [start, end], ind) => {
+        let lowest = t;
+        console.log('Start group: ', ind);
+        console.time(`Start group ${ind}`);
+        for (let i = start; i < end; i++) {
+            const found = checkGroupMap(i);
+            if (found < lowest) {
+                lowest = found;
+                console.log('lowest', lowest);
+            }
+        }
+        console.timeEnd(`Start group ${ind}`);
+        return lowest;
+    }, Infinity);
+    console.log('Q2', result);
+    console.timeEnd('Execution Time');
+}
 exports.q2 = q2;
