@@ -205,6 +205,8 @@ humidity-to-location map:
 1647757140 2247246174 9396637
 2434490733 4247201303 1535992`;
 
+// 79 80 81 82 83 ... 92
+
 export const sampleData = `seeds: 79 14 55 13
 
 seed-to-soil map:

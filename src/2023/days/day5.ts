@@ -61,23 +61,33 @@ export function q2() {
       ) as Groups,
   );
 
-  const seedChunks = chunk(seeds, 2) as [number, number][];
+  let seedChunks = chunk(seeds, 2) as [number, number][];
+  seedChunks = seedChunks.map(([s, r]) => [s, s + r - 1]);
+
+  seedChunks.sort((a, b) => (a[0] > b[0] ? -1 : 1));
+  console.log(seedChunks);
 
   const checkGroupMap = (seed: number) =>
     groupMaps.reduce((t, c) => {
       return findInGroup(t, c);
     }, seed);
 
-  const result = seedChunks.reduce((t, [s, r]) => {
+  const result = seedChunks.reduce((t, [start, end], ind) => {
     let lowest = t;
-    for (let i = s; i < s + r; i++) {
+    console.log('Start group: ', ind);
+    console.time(`Start group ${ind}`);
+    for (let i = start; i < end; i++) {
       const found = checkGroupMap(i);
       if (found < lowest) {
         lowest = found;
+
+        console.log('lowest', lowest);
       }
     }
+    console.timeEnd(`Start group ${ind}`);
     return lowest;
   }, Infinity);
+
   console.log('Q2', result);
   console.timeEnd('Execution Time');
 }

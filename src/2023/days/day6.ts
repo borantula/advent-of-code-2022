@@ -37,6 +37,7 @@ export function q1() {
 
 export function q2() {
   console.time('Execution Time');
+
   const parsed = pipe(
     data,
     utils.parseLinesToArray,
