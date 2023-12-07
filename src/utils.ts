@@ -40,3 +40,7 @@ export async function readFileContent(fileName = 'testData.txt') {
 
   return file.toString();
 }
+
+export function multiply(numbers: number[]) {
+  return numbers.reduce((t, c) => t * c, 1);
+}
