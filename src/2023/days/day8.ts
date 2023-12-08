@@ -10,7 +10,6 @@ type Dir = 'L' | 'R';
 type Path = Record<Dir, string>;
 
 export function q1() {
-
   console.time('Execution Time');
   const [dirArr, ...pathsArr] = pipe(
     data,
@@ -45,9 +44,6 @@ export function q1() {
     current = pathsObj[current][currentDir];
 
     currentDirIndex = (currentDirIndex + 1) % totalDirLength;
-    // totalDirLength > currentDirIndex + 1 ? currentDirIndex + 1 : 0;
-
-    // if (currentDirIndex > 10) break;
   }
 
   console.log('Q1', steps);
