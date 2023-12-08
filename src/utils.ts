@@ -44,3 +44,24 @@ export async function readFileContent(fileName = 'testData.txt') {
 export function multiply(numbers: number[]) {
   return numbers.reduce((t, c) => t * c, 1);
 }
+
+export function gcd(a: number, b: number): number {
+  while (b !== 0) {
+    const t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
+}
+
+export function lcm(a: number, b: number): number {
+  return (a * b) / gcd(a, b);
+}
+
+export function lcmArray(arr: number[]): number {
+  let currentLcm = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    currentLcm = lcm(currentLcm, arr[i]);
+  }
+  return currentLcm;
+}

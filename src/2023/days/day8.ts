@@ -51,10 +51,9 @@ export function q1() {
 }
 
 export function q2() {
-  return;
   console.time('Execution Time');
   const [dirArr, ...pathsArr] = pipe(
-    sampleData2,
+    data,
     utils.parseLinesToArray,
     ArrayFP.map((x) => x.split(' ')),
   );
@@ -71,87 +70,55 @@ export function q2() {
   ) as Record<string, Path>;
 
   const startingPoints = Object.keys(pathsObj).filter((a) => a[2] === 'A');
-  console.log(startingPoints);
 
-  function runToZet(point: string, dirIndexToStart: number) {
+  function runToZetBySteps(point: string, dirIndexToStart: number) {
     let current = point;
-    let currentDirIndex = dirIndexToStart;
-    let steps = 0;
-    const totalDirLength = dir.length;
 
-    while (current[2] !== 'Z') {
-      pathsObj;
-      steps++;
+    const currentDir = dir[dirIndexToStart];
+    current = pathsObj[current][currentDir];
 
-      if (!pathsObj[current]) {
-        throw `no key ${current}`;
-      }
-      const currentDir = dir[currentDirIndex];
-      current = pathsObj[current][currentDir];
-
-      currentDirIndex =
-        totalDirLength > currentDirIndex + 1 ? currentDirIndex + 1 : 0;
-
-      // if (currentDirIndex > 10) break;
-    }
-    return steps;
-  }
-
-  function runToZetBySteps(
-    point: string,
-    dirIndexToStart: number,
-    stepsToRun = 1,
-  ) {
-    let current = point;
-    let currentDirIndex = dirIndexToStart;
-    let steps = 0;
-    const totalDirLength = dir.length;
-
-    while (steps < stepsToRun) {
-      pathsObj;
-      steps++;
-
-      if (!pathsObj[current]) {
-        throw `no key ${current}`;
-      }
-      const currentDir = dir[currentDirIndex];
-      current = pathsObj[current][currentDir];
-
-      currentDirIndex = (currentDirIndex + 1) % totalDirLength;
-
-      // if (currentDirIndex > 10) break;
-    }
     return current;
   }
 
   let sync = false;
-  const steps = 0;
+  let steps = 0;
   let currentDirIndex = 0;
   const totalDirLength = dir.length;
 
-  const [firstPoint, ...otherPoints] = startingPoints;
-  // run the first until it reaches to a Z
-  // then check the rest if all can reach to Z in same steps
-  // if one fails continue...
-  // console.log(runToZet(firstPoint, currentDirIndex));
+  let pointsToRun = startingPoints;
+
+  const found = Array.from({ length: startingPoints.length }, () => 0);
+
   while (!sync) {
-    const stepsRun = runToZet(firstPoint, currentDirIndex);
-
-    console.log((currentDirIndex + stepsRun) % totalDirLength);
-    currentDirIndex = (currentDirIndex + stepsRun) % totalDirLength;
-
-    sync = otherPoints.every((p) => {
-      const reachedPoint = runToZetBySteps(p, currentDirIndex, stepsRun);
-      return reachedPoint[2] === 'Z';
-      // console.log(runToZetBySteps(startingPoints[1], currentDirIndex, stepsRun));
+    pointsToRun = pointsToRun.map((p) => {
+      // const c = pathsObj[p][currentDir];
+      return runToZetBySteps(p, currentDirIndex);
     });
 
-    console.log('passes', totalDirLength, stepsRun, sync, currentDirIndex);
-    if (stepsRun > 7) {
+    pointsToRun.forEach((p, i) => {
+      if (p[2] === 'Z' && found[i] === 0) {
+        found[i] = steps + 1;
+      }
+    });
+
+    sync = found.every((x) => x);
+
+    currentDirIndex = (currentDirIndex + 1) % totalDirLength;
+    steps++;
+
+    if (sync) {
       break;
+    }
+
+    if (steps % 1000000 === 0) {
+      console.log(
+        'Going on',
+        steps,
+        pointsToRun.filter((p) => p[2] === 'Z'),
+      );
     }
   }
 
-  console.log('Q2', steps);
+  console.log('Q2', steps, found, utils.lcmArray(found));
   console.timeEnd('Execution Time');
 }

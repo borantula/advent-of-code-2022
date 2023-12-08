@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.readFileContent = exports.calcAngleDegrees = exports.logger = exports.backToMatrixString = exports.parseToNumberMatrix = exports.parseToMatrix = exports.parseByEmptyLinesToArray = exports.parseLinesToArray = void 0;
+exports.multiply = exports.readFileContent = exports.calcAngleDegrees = exports.logger = exports.backToMatrixString = exports.parseToNumberMatrix = exports.parseToMatrix = exports.parseByEmptyLinesToArray = exports.parseLinesToArray = void 0;
 const fs = require("fs/promises");
 const path = require("path");
 function parseLinesToArray(str) {
@@ -52,3 +52,7 @@ function readFileContent(fileName = 'testData.txt') {
     });
 }
 exports.readFileContent = readFileContent;
+function multiply(numbers) {
+    return numbers.reduce((t, c) => t * c, 1);
+}
+exports.multiply = multiply;

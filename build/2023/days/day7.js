@@ -55,6 +55,21 @@ const cardOrder = [
     '3',
     '2',
 ];
+const cardOrder2 = [
+    'A',
+    'K',
+    'Q',
+    'T',
+    '9',
+    '8',
+    '7',
+    '6',
+    '5',
+    '4',
+    '3',
+    '2',
+    'J',
+];
 /**
 Five of a kind, where all five cards have the same label: AAAAA
 Four of a kind, where four cards have the same label and one card has a different label: AA8AA
@@ -76,15 +91,17 @@ const handRanks = {
 function getHandRank(cards) {
     const group = Object.values((0, lodash_1.groupBy)(cards)).sort((a, b) => a.length < b.length ? 1 : -1);
     const lengths = group.map((x) => x.length).join('');
-    // console.log(cards, group, lengths);
     return handRanks[lengths];
 }
 function getHandRankWithJoker(cards) {
     const grouped = (0, lodash_1.groupBy)(cards);
     const { J: jokers } = grouped, groups = __rest(grouped, ["J"]);
     const group = Object.values(groups).sort((a, b) => a.length < b.length ? 1 : -1);
+    // all J
+    if (!group.length) {
+        return 7;
+    }
     const hasJoker = !!jokers;
-    console.log('rank:', jokers);
     if (hasJoker) {
         jokers
             .map(() => group[0][0])
@@ -93,13 +110,9 @@ function getHandRankWithJoker(cards) {
         });
     }
     const lengths = group.map((x) => x.length).join('');
-    console.log(cards, group, lengths, hasJoker, jokers);
     return handRanks[lengths];
 }
-console.log(getHandRankWithJoker('KTJJT'.split('')));
-console.log(getHandRankWithJoker('KK677'.split('')));
 function q1() {
-    return;
     console.time('Execution Time');
     const parsed = (0, function_1.pipe)(day7_data_1.data, utils.parseLinesToArray, ArrayFP.map((x) => x.split(' ')), ArrayFP.map((x) => {
         const cards = x[0].split('');
@@ -128,12 +141,11 @@ function q1() {
     const result = parsed.map((hand, i) => {
         return (i + 1) * hand.bid;
     });
-    console.log('Q1', parsed, result, (0, lodash_1.sum)(result));
+    console.log('Q1', (0, lodash_1.sum)(result));
     console.timeEnd('Execution Time');
 }
 exports.q1 = q1;
 function q2() {
-    // return;
     console.time('Execution Time');
     const parsed = (0, function_1.pipe)(day7_data_1.data, utils.parseLinesToArray, ArrayFP.map((x) => x.split(' ')), ArrayFP.map((x) => {
         const cards = x[0].split('');
@@ -148,8 +160,8 @@ function q2() {
         if (a.handRank === b.handRank) {
             // check for card order for equal ranks
             for (let i = 0; i < 5; i++) {
-                const aEl = cardOrder.indexOf(a.cards[i]);
-                const bEl = cardOrder.indexOf(b.cards[i]);
+                const aEl = cardOrder2.indexOf(a.cards[i]);
+                const bEl = cardOrder2.indexOf(b.cards[i]);
                 if (aEl === bEl) {
                     continue;
                 }
@@ -162,7 +174,7 @@ function q2() {
     const result = parsed.map((hand, i) => {
         return (i + 1) * hand.bid;
     });
-    console.log('Q2', parsed, result, (0, lodash_1.sum)(result));
+    console.log('Q2', (0, lodash_1.sum)(result));
     console.timeEnd('Execution Time');
 }
 exports.q2 = q2;
