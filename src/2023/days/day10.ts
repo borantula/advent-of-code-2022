@@ -3,6 +3,7 @@ import {
   sampleData2,
   sampleData3,
   sampleData4,
+  sampleData5,
   data,
 } from './day10-data';
 import * as utils from '../../utils';
@@ -43,7 +44,7 @@ const getNextCoordinates = (
   coord: utils.Position,
   letter: keyof typeof canConnect,
 ) => {
-  console.log('letter', coord, letter, canConnect[letter]);
+  // console.log('letter', coord, letter, canConnect[letter]);
   return Object.entries(canConnect[letter])
     .filter((x) => x[1])
     .map((x) => x[0])
@@ -64,6 +65,7 @@ const getNextCoordinates = (
     });
 };
 export function q1() {
+  return;
   console.time('Execution Time');
 
   const currentData = data;
@@ -75,18 +77,18 @@ export function q1() {
 
   const S = '|';
   console.log(parsed);
-  console.log(
-    'sampleData',
-    currentData.indexOf('S'),
-    parsed[0].length,
-    Math.floor(currentData.indexOf('S') / parsed[0].length),
-    (currentData.indexOf('S') % parsed[1].length) - startY,
-  );
+  // console.log(
+  //   'sampleData',
+  //   currentData.indexOf('S'),
+  //   parsed[0].length,
+  //   Math.floor(currentData.indexOf('S') / parsed[0].length),
+  //   (currentData.indexOf('S') % parsed[1].length) - startY,
+  // );
 
   const bag = [coordStarting.join('-')];
   const n1 = utils.getImmediateNeighbors(parsed, coordStarting);
   const nextCoords = getNextCoordinates(coordStarting, S);
-  console.log('starting points', n1, coordStarting, nextCoords);
+  // console.log('starting points', n1, coordStarting, nextCoords);
   nextCoords.forEach((c) => {
     if (c) bag.push(c.join('-'));
   });
@@ -105,7 +107,7 @@ export function q1() {
       if (c) bag.push(c.join('-'));
     });
     currentCoord = nextCoords2[0] as utils.Position;
-    console.log('currentCoord', bag, nextCoords2, currentCoord);
+    // console.log('currentCoord', bag, nextCoords2, currentCoord);
   }
 
   // const nextCoords2 = getNextCoordinates([2, 1], parsed[2][1] as Dir).filter(
@@ -122,10 +124,68 @@ export function q1() {
   // nextCoords3.forEach((c) => {
   //   if (c) bag.push(c.join('-'));
   // });
-  console.log(bag);
+  // console.log(bag);
 
   console.log('Q1', bag.length, bag.length / 2);
   console.timeEnd('Execution Time');
 }
 
-export function q2() {}
+export function q2() {
+  console.time('Execution Time');
+
+  const currentData = sampleData5;
+  const parsed = pipe(currentData, utils.parseToMatrix);
+
+  const startY = Math.floor(currentData.indexOf('S') / parsed[0].length);
+  const startX = (currentData.indexOf('S') % parsed[1].length) - startY;
+  const coordStarting: utils.Position = [startX, startY];
+
+  const S = 'F';
+  // console.log(parsed);
+  // console.log(
+  //   'sampleData',
+  //   currentData.indexOf('S'),
+  //   parsed[0].length,
+  //   Math.floor(currentData.indexOf('S') / parsed[0].length),
+  //   (currentData.indexOf('S') % parsed[1].length) - startY,
+  // );
+
+  const bag = [coordStarting.join('-')];
+  const coordBag = [coordStarting];
+  const n1 = utils.getImmediateNeighbors(parsed, coordStarting);
+  const nextCoords = getNextCoordinates(coordStarting, S);
+  // console.log('starting points', n1, coordStarting, nextCoords);
+  nextCoords.forEach((c) => {
+    if (c) bag.push(c.join('-'));
+  });
+  let currentCoord = nextCoords[0] as utils.Position;
+
+  while (currentCoord) {
+    if (!currentCoord) {
+      break;
+    }
+    const nextCoords2 = getNextCoordinates(
+      currentCoord,
+      parsed[currentCoord[1]][currentCoord[0]] as Dir,
+    ).filter((x) => x && !bag.includes(x.join('-')));
+
+    nextCoords2.forEach((c) => {
+      if (c) {
+        bag.push(c.join('-'));
+        coordBag.push(c as utils.Position);
+      }
+    });
+    currentCoord = nextCoords2[0] as utils.Position;
+  }
+
+  // console.log(coordBag);
+
+  coordBag.forEach(([x, y]) => {
+    parsed[y][x] = '*';
+  });
+
+  const rows = parsed.map((row) => row.join(''));
+  console.log(rows.join('\n'));
+  console.log('Q1', bag.length, bag.length / 2);
+  console.timeEnd('Execution Time');
+}
