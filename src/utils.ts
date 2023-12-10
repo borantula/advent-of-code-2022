@@ -65,3 +65,62 @@ export function lcmArray(arr: number[]): number {
   }
   return currentLcm;
 }
+
+export type Matrix = Array<Array<string | number>>;
+export type Position = [number, number];
+// function isEdge(matrix: Matrix, position: Position) {
+//   const [x, y] = position;
+//   const width = matrix[0].length - 1;
+//   const height = matrix.length - 1;
+//   return x === 0 || y === 0 || y === height || x === width;
+// }
+
+export function getNeighbors(matrix: Matrix, p: Position) {
+  const [x, y] = p;
+  const val = (pos: Position) => matrix[pos[1]][pos[0]];
+
+  const neighbors: Record<string, unknown[]> = {
+    t: [],
+    b: [],
+    l: [],
+    r: [],
+  };
+
+  for (let i = y - 1; i >= 0; i--) {
+    neighbors.t.push(val([x, i]));
+  }
+  for (let i = y + 1; i < matrix.length; i++) {
+    neighbors.b.push(val([x, i]));
+  }
+  for (let i = x + 1; i < matrix[0].length; i++) {
+    neighbors.r.push(val([i, y]));
+  }
+  for (let i = x - 1; i >= 0; i--) {
+    neighbors.l.push(val([i, y]));
+  }
+  return neighbors;
+}
+
+export function getImmediateNeighbors(matrix: Matrix, p: Position) {
+  const [x, y] = p;
+  const val = (pos: Position) => matrix[pos[1]][pos[0]];
+
+  const neighbors: Record<string, unknown[]> = {
+    north: [],
+    south: [],
+    west: [],
+    east: [],
+  };
+
+  // for (let i = y - 1; i >= 0; i--) {
+  neighbors.north.push(val([x, y - 1]));
+  // }
+
+  neighbors.south.push(val([x, y + 1]));
+
+  neighbors.east.push(val([x + 1, y]));
+
+  neighbors.west.push(val([x - 1, y]));
+
+  return neighbors;
+}

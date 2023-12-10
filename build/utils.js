@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.multiply = exports.readFileContent = exports.calcAngleDegrees = exports.logger = exports.backToMatrixString = exports.parseToNumberMatrix = exports.parseToMatrix = exports.parseByEmptyLinesToArray = exports.parseLinesToArray = void 0;
+exports.getImmediateNeighbors = exports.getNeighbors = exports.lcmArray = exports.lcm = exports.gcd = exports.multiply = exports.readFileContent = exports.calcAngleDegrees = exports.logger = exports.backToMatrixString = exports.parseToNumberMatrix = exports.parseToMatrix = exports.parseByEmptyLinesToArray = exports.parseLinesToArray = void 0;
 const fs = require("fs/promises");
 const path = require("path");
 function parseLinesToArray(str) {
@@ -56,3 +56,72 @@ function multiply(numbers) {
     return numbers.reduce((t, c) => t * c, 1);
 }
 exports.multiply = multiply;
+function gcd(a, b) {
+    while (b !== 0) {
+        const t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+exports.gcd = gcd;
+function lcm(a, b) {
+    return (a * b) / gcd(a, b);
+}
+exports.lcm = lcm;
+function lcmArray(arr) {
+    let currentLcm = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        currentLcm = lcm(currentLcm, arr[i]);
+    }
+    return currentLcm;
+}
+exports.lcmArray = lcmArray;
+// function isEdge(matrix: Matrix, position: Position) {
+//   const [x, y] = position;
+//   const width = matrix[0].length - 1;
+//   const height = matrix.length - 1;
+//   return x === 0 || y === 0 || y === height || x === width;
+// }
+function getNeighbors(matrix, p) {
+    const [x, y] = p;
+    const val = (pos) => matrix[pos[1]][pos[0]];
+    const neighbors = {
+        t: [],
+        b: [],
+        l: [],
+        r: [],
+    };
+    for (let i = y - 1; i >= 0; i--) {
+        neighbors.t.push(val([x, i]));
+    }
+    for (let i = y + 1; i < matrix.length; i++) {
+        neighbors.b.push(val([x, i]));
+    }
+    for (let i = x + 1; i < matrix[0].length; i++) {
+        neighbors.r.push(val([i, y]));
+    }
+    for (let i = x - 1; i >= 0; i--) {
+        neighbors.l.push(val([i, y]));
+    }
+    return neighbors;
+}
+exports.getNeighbors = getNeighbors;
+function getImmediateNeighbors(matrix, p) {
+    const [x, y] = p;
+    const val = (pos) => matrix[pos[1]][pos[0]];
+    const neighbors = {
+        north: [],
+        south: [],
+        west: [],
+        east: [],
+    };
+    // for (let i = y - 1; i >= 0; i--) {
+    neighbors.north.push(val([x, y - 1]));
+    // }
+    neighbors.south.push(val([x, y + 1]));
+    neighbors.east.push(val([x + 1, y]));
+    neighbors.west.push(val([x - 1, y]));
+    return neighbors;
+}
+exports.getImmediateNeighbors = getImmediateNeighbors;
