@@ -54,9 +54,6 @@ export function q1() {
     toExpand.col.push(x);
   });
 
-  // toExpand.row.forEach((r) => {
-  //   array.splice(2, 0, 3);
-  // });
   const updatedGalaxies = galaxies.map(([x, y]) => {
     const colsToAdd = toExpand.col.filter((c) => c < x).length;
     const rowsToAdd = toExpand.row.filter((r) => r < y).length;
@@ -73,11 +70,7 @@ export function q1() {
 
   console.log(
     'Q1',
-    // toExpand,
-    // galaxies,
-    // updatedGalaxies,
-    // getAllCombinations(updatedGalaxies),
-    // diff,
+
     sum(diff),
   );
   console.timeEnd('Execution Time');
