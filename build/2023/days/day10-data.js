@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.data = exports.sampleData4 = exports.sampleData3 = exports.sampleData2 = exports.sampleData = void 0;
+exports.sampleData7 = exports.sampleData6 = exports.sampleData5 = exports.data = exports.sampleData4 = exports.sampleData3 = exports.sampleData2 = exports.sampleData = void 0;
 exports.sampleData = `.....
 .S-7.
 .|.|.
@@ -161,3 +161,32 @@ LL7-|L.L7JFJ-L77L7-F-|.LJ-7.|.|-|.L|.F-7L|J-|7JJ|77F|FFJLJ.J7F--FJ7||LLJLLJL7-L.
 7||||J7F--J||7.L-7L77-FJJ.-7.-J-LJ.LLJJ-|JLL|J|.7--F-7J-LF-.||J-L|LL.||7LL-FJ..F|F--7|7--7.7L7-|J.F|-F-JJ7.FFJJ7..F|L|-JL7FL.LJ-7LJF-JL||-||
 |FL-77-J|-7L7-7LF7FJJ.|J.L|.L|.F7F7LL|-LJ.--JFLLF7---J7--J7|FL|.JL7FLLJ--|7JL--FFJ|J|J|7|.F--|7LFF-L-||L7777.JJF.LFL7L.7LJ-J7.FL7.-J||FLL-77
 JLLF---.7.LLJLJ.-JJJF.LJ..|-JL-FLLJ.L|7---J7-F-JJJJL|-J----L--J-.-L-.JJJ.LL.L|JJL-L-J7.FJ.|7-LJFJJ-L|LF-FJ---J.L-JLJ|JLL-JLLL-7-J-L.L7J.|JL|`;
+exports.sampleData5 = `.F----7F7F7F7F-7....
+.|F--7||||||||FJ....
+.||.FJ||||||||L7....
+FJL7L7LJLJ||LJ.L-7..
+L--J.L7...LJS7F-7L7.
+....F-J..F7FJ|L7L7L7
+....L7.F7||L7|.L7L7|
+.....|FJLJ|FJ|F7|.LJ
+....FJL-7.||.||||...
+....L---J.LJ.LJLJ...`;
+exports.sampleData6 = `...........
+.S-------7.
+.|F-----7|.
+.||.....||.
+.||.....||.
+.|L-7.F-J|.
+.|..|.|..|.
+.L--J.L--J.
+...........`;
+exports.sampleData7 = `FF7FSF7F7F7F7F7F---7
+L|LJ||||||||||||F--J
+FL-7LJLJ||||||LJL-77
+F--JF--7||LJLJ7F7FJ-
+L---JF-JLJ.||-FJLJJ7
+|F|F-JF---7F7-L7L|7|
+|FFJF7L7F-JF7|JL---7
+7-L-JL7||F7|L7F-7F7|
+L.L7LFJ|||||FJL7||LJ
+L7JLJL-JLJLJL--JLJ.L`;

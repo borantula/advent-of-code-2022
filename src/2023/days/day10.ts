@@ -4,6 +4,8 @@ import {
   sampleData3,
   sampleData4,
   sampleData5,
+  sampleData6,
+  sampleData7,
   data,
 } from './day10-data';
 import * as utils from '../../utils';
@@ -181,7 +183,7 @@ export function q2() {
   // console.log(coordBag);
 
   coordBag.forEach(([x, y]) => {
-    parsed[y][x] = '*';
+    parsed[y][x] = 'O';
   });
 
   const rows = parsed.map((row) => row.join(''));
