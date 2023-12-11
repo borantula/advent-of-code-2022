@@ -16,10 +16,7 @@ function getAllCombinations(
   return combinations;
 }
 
-export function q1() {
-  console.time('Execution Time');
-
-  const EXPANSION_RATE = 1000000;
+function solveTheDay(EXPANSION_RATE = 2) {
   const currentData = data;
   const parsed = pipe(currentData, utils.parseToMatrix);
   const toExpand: Record<'col' | 'row', number[]> = {
@@ -63,19 +60,19 @@ export function q1() {
     ] as utils.Position;
   });
 
-  const combinations = getAllCombinations(updatedGalaxies);
-  const diff = combinations.map(([[x1, y1], [x2, y2]]) => {
+  return getAllCombinations(updatedGalaxies).map(([[x1, y1], [x2, y2]]) => {
     return Math.abs(x1 - x2) + Math.abs(y1 - y2);
   });
+}
 
-  console.log(
-    'Q1',
-
-    sum(diff),
-  );
+export function q1() {
+  console.time('Execution Time');
+  console.log('Q1', sum(solveTheDay(2)));
   console.timeEnd('Execution Time');
 }
 
 export function q2() {
-  // use const EXPANSION_RATE = 1000000; in q1
+  console.time('Execution Time');
+  console.log('Q1', sum(solveTheDay(1000000)));
+  console.timeEnd('Execution Time');
 }
