@@ -26,6 +26,16 @@ export function logger<T>(a: T) {
   return a;
 }
 
+export function startTimer<T>(a: T) {
+  console.time('Timer test');
+  return a;
+}
+
+export function endTimer<T>(a: T) {
+  console.timeEnd('Timer test');
+  return a;
+}
+
 // Greatest common devisor
 // export function gcd(a: number, b: number) {
 //   return !b ? a : gcd(b, a % b);
