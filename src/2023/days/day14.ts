@@ -2,8 +2,7 @@ import { sampleData, data } from './day14-data';
 import * as utils from '../../utils';
 import * as ArrayFP from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
-import { isEqual, last, memoize, range, sum } from 'lodash';
-import { number } from 'yargs';
+import { isEqual, last, memoize, range, sample, sum } from 'lodash';
 
 export function q1() {
   return;
@@ -63,6 +62,23 @@ function rotateMatrix(matrix: string[][], cw = true): string[][] {
 // north -> col sort
 // west -> row reverse sort
 // east -> row sort
+
+const rowScores = (col: string) =>
+  col
+    .split('')
+    .reverse()
+    .map((c, ind) => {
+      const score = c === 'O' ? ind + 1 : 0;
+
+      return score;
+    });
+
+const getScore = (cols: string[]) => sum(cols.map(rowScores).map(sum));
+const getScores = (list: string[][]) =>
+  list.reverse().reduce((t, row, ind) => {
+    return t + row.filter((x) => x === 'O').length * (ind + 1);
+  }, 0);
+
 export function q2() {
   console.time('Execution Time');
 
@@ -114,33 +130,19 @@ export function q2() {
       .join('#')
       .split('');
 
-  const rowScores = (col: string) =>
-    col
-      .split('')
-      .reverse()
-      .map((c, ind) => {
-        return c === 'O' ? ind + 1 : 0;
-      });
-  const parsed = pipe(sampleData, utils.parseLinesToArray);
+  const parsed = pipe(data, utils.parseLinesToArray);
 
   let orderedColumns: string[] = parsed;
 
   const resultBag = new Set<number>();
-  for (let cycle = 1; cycle <= 1000000000; cycle++) {
+  const resultMap = new Map<number, number[]>();
+  for (let cycle = 1; cycle <= 1000; cycle++) {
     orderedColumns = pipe(
       orderedColumns,
       ArrayFP.mapWithIndex((i) => getColumnOrderedNorth(orderedColumns, i)),
       rotateMatrix,
       ArrayFP.map((x) => x.join('')),
     );
-
-    // const res = sum(orderedColumns.map(rowScores).map(sum));
-    // if (res === 64) {
-    //   console.log('FOUND REPEAT', cycle);
-    //   break;
-    // }
-    // console.log('orderedColumns');
-    // console.log(orderedColumns.join('\n'));
 
     orderedColumns = pipe(
       orderedColumns,
@@ -162,19 +164,24 @@ export function q2() {
       ArrayFP.mapWithIndex((i) => getColumnOrderedEast(orderedColumns, i)),
       ArrayFP.map((x) => x.join('')),
     );
-    // console.log('orderedColumns 4');
+    // console.log('orderedColumns ', cycle);
     // console.log(orderedColumns.join('\n'));
     const rbs = resultBag.size;
-    const res = sum(orderedColumns.map(rowScores).map(sum));
+    const res = getScores(orderedColumns.map((x) => x.split('')));
+    const inMap = resultMap.get(res);
+    resultMap.set(res, inMap ? [...inMap, cycle] : [cycle]);
     resultBag.add(res);
     if (rbs !== resultBag.size) {
       console.log(`CYCLE ${cycle}:`, res);
     }
-    if (cycle % 10000 === 0) {
-      console.log('still going', cycle, rbs);
-    }
   }
-  console.log(`END`, sum(orderedColumns.map(rowScores).map(sum)));
+  const endNumber = 1000000000;
+  console.log(
+    `END`,
+    resultMap,
+    getScores(orderedColumns.map((x) => x.split(''))),
+    (endNumber - 96) % 11,
+  );
 
   /**
    
@@ -189,6 +196,43 @@ export function q2() {
     #...O###..
     #..OO#....
 
+After 1 cycle:
+.....#....
+....#...O#
+...OO##...
+.OO#......
+.....OOO#.
+.O#...O#.#
+....O#....
+......OOOO
+#...O###..
+#..OO#....
+
+
+
+After 2 cycles:
+.....#....
+....#...O#
+.....##...
+..O#......
+.....OOO#.
+.O#...O#.#
+....O#...O
+.......OOO
+#..OO###..
+#.OOO#...O
+
+After 3 cycles:
+.....#....
+....#...O#
+.....##...
+..O#......
+.....OOO#.
+.O#...O#.#
+....O#...O
+.......OOO
+#...O###.O
+#.OOO#...O
    */
   console.timeEnd('Execution Time');
 }
