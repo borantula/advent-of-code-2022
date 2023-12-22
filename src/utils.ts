@@ -111,6 +111,9 @@ export function getNeighbors(matrix: Matrix, p: Position) {
   return neighbors;
 }
 
+export const matrixValue = (matrix: Matrix, pos: Position) =>
+  matrix[pos[1]][pos[0]];
+
 export function getImmediateNeighbors(matrix: Matrix, p: Position) {
   const [x, y] = p;
   const val = (pos: Position) => matrix[pos[1]][pos[0]];
@@ -132,5 +135,63 @@ export function getImmediateNeighbors(matrix: Matrix, p: Position) {
 
   neighbors.west.push(val([x - 1, y]));
 
+  return neighbors;
+}
+
+export function getImmediateNeighborsCoordinates(matrix: Matrix, p: Position) {
+  const [x, y] = p;
+  const len = matrix.length;
+
+  const neighbors: Record<string, Position | undefined> = {
+    north: undefined,
+    south: undefined,
+    west: undefined,
+    east: undefined,
+  };
+
+  if (y > 0) {
+    neighbors.north = [x, y - 1];
+  }
+
+  if (y + 1 < len) {
+    neighbors.south = [x, y + 1];
+  }
+
+  if (x + 1 < len) {
+    neighbors.east = [x + 1, y];
+  }
+
+  if (x > 0) {
+    neighbors.west = [x - 1, y];
+  }
+  return neighbors;
+}
+
+export function getNeighborsCoordinatesInfinity(matrix: Matrix, p: Position) {
+  const [x, y] = p;
+  const len = matrix.length;
+
+  const neighbors: Record<string, Position | undefined> = {
+    north: undefined,
+    south: undefined,
+    west: undefined,
+    east: undefined,
+  };
+
+  if (y > 0) {
+    neighbors.north = [x, y - 1];
+  }
+
+  if (y + 1 < len) {
+    neighbors.south = [x, y + 1];
+  }
+
+  if (x + 1 < len) {
+    neighbors.east = [x + 1, y];
+  }
+
+  if (x > 0) {
+    neighbors.west = [x - 1, y];
+  }
   return neighbors;
 }

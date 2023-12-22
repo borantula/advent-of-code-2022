@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getImmediateNeighbors = exports.getNeighbors = exports.lcmArray = exports.lcm = exports.gcd = exports.multiply = exports.readFileContent = exports.calcAngleDegrees = exports.logger = exports.backToMatrixString = exports.parseToNumberMatrix = exports.parseToMatrix = exports.parseByEmptyLinesToArray = exports.parseLinesToArray = void 0;
+exports.getImmediateNeighbors = exports.getNeighbors = exports.lcmArray = exports.lcm = exports.gcd = exports.multiply = exports.readFileContent = exports.calcAngleDegrees = exports.endTimer = exports.startTimer = exports.logger = exports.backToMatrixString = exports.parseToNumberMatrix = exports.parseToMatrix = exports.parseByEmptyLinesToArray = exports.parseLinesToArray = void 0;
 const fs = require("fs/promises");
 const path = require("path");
 function parseLinesToArray(str) {
@@ -37,6 +37,16 @@ function logger(a) {
     return a;
 }
 exports.logger = logger;
+function startTimer(a) {
+    console.time('Timer test');
+    return a;
+}
+exports.startTimer = startTimer;
+function endTimer(a) {
+    console.timeEnd('Timer test');
+    return a;
+}
+exports.endTimer = endTimer;
 // Greatest common devisor
 // export function gcd(a: number, b: number) {
 //   return !b ? a : gcd(b, a % b);
