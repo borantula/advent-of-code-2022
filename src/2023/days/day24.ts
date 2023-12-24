@@ -35,10 +35,6 @@ function parseLineToVector(str: string): Vector {
     vz: p[5],
   };
 }
-console.log(parseLineToVector('19, 13, 30 @ -2,  1, -2'));
-
-const vec = parseLineToVector('19, 13, 30 @ -2,  1, -2');
-const vec2 = parseLineToVector('18, 19, 22 @ -1, -1, -2');
 
 // p2 = p1 + v *t
 function getPositionAtTime(vec: Vector, time: number): Position {
@@ -60,20 +56,14 @@ function yIntercept(vec: Vector, slope: number) {
 }
 
 function checkTwoVectors(vec: Vector, vec2: Vector) {
-  // console.log('---V1---');
-  // console.log(vec);
-  // console.log(getPositionAtTime(vec, 7));
-  // console.log(getPositionAtTime(vec, 27));
   const m1 = getSlope(getPositionAtTime(vec, 1), getPositionAtTime(vec, 2));
   const c1 = yIntercept(vec, m1);
   // console.log(m1, c1);
 
-  // console.log('---V2---');
   const m2 = getSlope(getPositionAtTime(vec2, 1), getPositionAtTime(vec2, 2));
   const c2 = yIntercept(vec2, m2);
   // console.log(m2, c2);
 
-  // Function to calculate the x-coordinate of the intersection
   function findXIntersect(
     m1: number,
     c1: number,
@@ -83,16 +73,14 @@ function checkTwoVectors(vec: Vector, vec2: Vector) {
     return (c2 - c1) / (m1 - m2);
   }
 
-  // Function to calculate the y-coordinate of the intersection
   function findYIntersect(x: number, m1: number, c1: number): number {
     return m1 * x + c1;
   }
 
-  // Calculate the intersection point
   const xIntersect = findXIntersect(m1, c1, m2, c2);
   const yIntersect = findYIntersect(xIntersect, m1, c1);
 
-  // console.log(`Intersection Point: (${xIntersect}, ${yIntersect})`);
+  // console.log(`Intersection: (${xIntersect}, ${yIntersect})`);
   return [xIntersect, yIntersect];
 }
 
