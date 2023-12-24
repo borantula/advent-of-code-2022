@@ -139,7 +139,7 @@ export function q1() {
     }),
   );
 
-  console.log('Q1', parsed, parsed.filter((x) => x).length);
+  console.log('Q1', parsed.filter((x) => x).length);
   console.timeEnd('Execution Time');
 }
 
