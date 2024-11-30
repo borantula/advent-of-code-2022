@@ -47,11 +47,14 @@ function walkThePath(
     // no rocks, no out of bounds, no already in path
     const usable = Object.keys(n.values).filter((x) => {
       const c = n.coord[x];
-      const hasCoord = c && !inPaths(c);
-      if (mandatoryDirection) {
-        return x === mandatoryDirection && hasCoord;
+      const hasNotSeen = c && !inPaths(c);
+      if (!hasNotSeen) {
+        console.log('SEEEN ALREADY', c);
       }
-      return n.values[x] && n.values[x] !== '#' && hasCoord;
+      if (mandatoryDirection) {
+        return x === mandatoryDirection && hasNotSeen;
+      }
+      return n.values[x] && n.values[x] !== '#' && hasNotSeen;
     });
 
     if (mandatoryDirection && usable.length > 1) {
@@ -61,6 +64,7 @@ function walkThePath(
 
     if (usable.length === 0) {
       finalCoordinates = [];
+      // console.log('DONE ONE MORE', steps);
       break;
     }
 
@@ -70,24 +74,13 @@ function walkThePath(
 
     if (usable.length >= 2) {
       finalCoordinates = usable.map((x) => n.coord[x]) as utils.Position[];
+      finalCoordinates = [finalCoordinates[0]];
       break;
     }
   }
 
   return { paths, finalCoordinates };
 }
-
-// Custom resolver function to generate a unique cache key
-const resolver = (
-  startingCoord: utils.Position,
-  matrix: utils.Matrix,
-  paths: string[],
-) => {
-  const coordKey = startingCoord.join('-');
-  const pathsKey = Array.from(paths).join('-');
-
-  return `${coordKey}_${pathsKey}`;
-};
 
 type WalkResult = {
   paths: string[];
@@ -116,6 +109,7 @@ export function q1() {
     const result = walkThePath(sc, matrix, paths);
 
     if (result.finalCoordinates.length === 0) {
+      console.log('HERE IS ENDED');
       return [result];
     }
 
@@ -138,9 +132,6 @@ export function q2() {
   console.time('Execution Time');
   const currentData = data;
 
-  // Create a memoized version of walkThePath
-  const memoizedWalkThePath = memoize(walkThePath, resolver);
-
   const charsToReplace = '[\\^><v]';
   const slopesToDots = (s: string) =>
     s.replace(new RegExp(charsToReplace, 'g'), '.');
@@ -155,6 +146,20 @@ export function q2() {
     matrix[0].length - 1,
   ];
 
+  // // Create a memoized version of walkThePath
+  // // Custom resolver function to generate a unique cache key
+  const resolver = (
+    startingCoord: utils.Position,
+    _m: utils.Matrix,
+    paths: string[],
+  ) => {
+    const coordKey = startingCoord.join('-');
+    const pathsKey = Buffer.from(paths.join('-'), 'base64');
+
+    return `${coordKey}_${pathsKey}`;
+  };
+  const memoizedWalkThePath = memoize(walkThePath, resolver);
+
   function walkRecursivePaths(
     sc: utils.Position,
     paths: string[],
@@ -166,9 +171,10 @@ export function q2() {
     }
 
     return result.finalCoordinates
-      .map((r) => walkRecursivePaths(r, [...result.paths]))
+      .map((r) => walkRecursivePaths(r, result.paths.slice(0)))
       .flat();
   }
+
   const result = walkRecursivePaths(startingCoord, []);
 
   const pathSizes = new Set(
@@ -176,6 +182,13 @@ export function q2() {
       .filter((x) => x.paths.includes(endingCoord.join('-')))
       .map((x) => x.paths.length - 1),
   );
-  console.log('Q2', Math.max(...pathSizes), endingCoord);
+  console.log(
+    'Q2',
+    result.map((x) => x.paths.slice(-1)),
+    Math.max(...pathSizes),
+    endingCoord,
+    utils.matrixValue(matrix, [14, 9]),
+    utils.getImmediateNeighbors(matrix, [14, 9]),
+  );
   console.timeEnd('Execution Time');
 }
