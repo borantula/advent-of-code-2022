@@ -1,8 +1,5 @@
-import { sum, take } from 'lodash';
 import { sampleData, data } from './day1-data';
 import * as utils from '../../utils';
-import * as ArrayFP from 'fp-ts/Array';
-import { pipe } from 'fp-ts/lib/function';
 
 const getSides = (d: string) => {
   const parsed = utils.parseLinesToArray(d).map((a) =>
