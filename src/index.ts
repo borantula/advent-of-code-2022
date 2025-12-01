@@ -22,6 +22,9 @@ async function runTheDay(day: number, year: number) {
 }
 
 runTheDay(day, year).then((currentDay) => {
+  if (currentDay.run) {
+    return currentDay.run();
+  }
   console.log(currentDay.q1());
   console.log(currentDay.q2());
 });
